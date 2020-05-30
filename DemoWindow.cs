@@ -75,7 +75,7 @@ namespace TileMapDemos
             base.OnMouseMove(e);
             if (MouseState.IsAnyButtonDown)
             {
-                Renderer.Center += e.Delta * 1.25f;
+                Renderer.Center += e.Delta * 1.25f / IRenderer.TileSize;
             }
         }
 
@@ -84,7 +84,7 @@ namespace TileMapDemos
             GL.GenTexture();
             GL.BindTexture(TextureTarget.Texture2D, TileMap.TileSetHandle);
             var assembly = Assembly.GetExecutingAssembly();
-            using var stream = assembly.GetManifestResourceStream("opengl_tilemap_demos.Resources.TileSet.png");
+            using var stream = assembly.GetManifestResourceStream("OpenGLTileMapDemos.Resources.TileSet.png");
             using var image = Image.Load<Rgba32>(stream);
 
             byte[] data = new byte[image.Width * image.Height * 4];

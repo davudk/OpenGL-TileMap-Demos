@@ -27,6 +27,7 @@ namespace TileMapDemos.Renderers
             GL.LoadIdentity();
             GL.Ortho(0f, backBufferWidth, 0, backBufferHeight, 0f, 1f);
             GL.Translate(backBufferWidth / 2, backBufferHeight / 2, 0);
+            GL.Scale(IRenderer.TileSize, IRenderer.TileSize, 1);
             GL.Translate(-Center.X, -Center.Y, 0);
 
             GL.BindTexture(TextureTarget.Texture2D, TileMap.TileSetHandle);
@@ -47,23 +48,23 @@ namespace TileMapDemos.Renderers
                     float tileY1 = tileY0 + IRenderer.TileSize;
 
                     GL.TexCoord2(tileTexCoordX0, tileTexCoordY0);
-                    GL.Vertex2(tileX0, tileY0);
+                    GL.Vertex2(x, y);
 
                     GL.TexCoord2(tileTexCoordX1, tileTexCoordY0);
-                    GL.Vertex2(tileX1, tileY0);
+                    GL.Vertex2(x + 1, y);
 
                     GL.TexCoord2(tileTexCoordX0, tileTexCoordY1);
-                    GL.Vertex2(tileX0, tileY1);
+                    GL.Vertex2(x, y + 1);
 
 
                     GL.TexCoord2(tileTexCoordX1, tileTexCoordY0);
-                    GL.Vertex2(tileX1, tileY0);
+                    GL.Vertex2(x + 1, y);
 
                     GL.TexCoord2(tileTexCoordX0, tileTexCoordY1);
-                    GL.Vertex2(tileX0, tileY1);
+                    GL.Vertex2(x, y + 1);
 
                     GL.TexCoord2(tileTexCoordX1, tileTexCoordY1);
-                    GL.Vertex2(tileX1, tileY1);
+                    GL.Vertex2(x + 1, y + 1);
                 }
             }
 

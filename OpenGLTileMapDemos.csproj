@@ -13,6 +13,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <Folder Include="Screenshots\" />
       <Folder Include="Resources" />
     </ItemGroup>
 

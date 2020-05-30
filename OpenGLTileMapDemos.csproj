@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>netcoreapp3.1</TargetFramework>
+        <RootNamespace>OpenGLTileMapDemos</RootNamespace>
+        <OutputType>Exe</OutputType>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="OpenTK" Version="4.0.0-pre9.1" />
+      <PackageReference Include="SixLabors.ImageSharp" Version="1.0.0-rc0001" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Resources" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <EmbeddedResource Include="Resources\TileSet.png" />
+    </ItemGroup>
+
+</Project>

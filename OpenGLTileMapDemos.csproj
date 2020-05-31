@@ -8,16 +8,22 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <None Remove="Resources\BufferedRenderer.frag" />
+      <None Remove="Resources\BufferedRenderer.vert" />
+    </ItemGroup>
+
+    <ItemGroup>
       <PackageReference Include="OpenTK" Version="4.0.0-pre9.1" />
       <PackageReference Include="SixLabors.ImageSharp" Version="1.0.0-rc0001" />
     </ItemGroup>
 
     <ItemGroup>
       <Folder Include="Screenshots\" />
-      <Folder Include="Resources" />
     </ItemGroup>
 
     <ItemGroup>
+      <EmbeddedResource Include="Resources\BufferedRenderer.frag" />
+      <EmbeddedResource Include="Resources\BufferedRenderer.vert" />
       <EmbeddedResource Include="Resources\TileSet.png" />
     </ItemGroup>
 

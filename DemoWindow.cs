@@ -19,7 +19,7 @@ namespace TileMapDemos
             Profile = ContextProfile.Compatability
         };
 
-        public IRenderer Renderer { get; private set; } = new ImmediateRenderer();
+        public IRenderer Renderer { get; private set; } = new BufferedRenderer();
         public TileMap TileMap { get; set; }
 
         public DemoWindow() : base(GameWindowSettings.Default, Settings)
@@ -29,10 +29,10 @@ namespace TileMapDemos
             GL.Enable(EnableCap.Texture2D);
 
             Random rnd = new Random();
-            TileMap = new TileMap(256, 256);
+            TileMap = new TileMap(64, 64);
             for (int i = 0; i < TileMap.Tiles.Length; i++)
             {
-                TileMap.Tiles[i] = (byte) rnd.Next(4);
+                TileMap.Tiles[i] = (byte)rnd.Next(4);
             }
 
             TileMap.TileSetHandle = LoadTileSetTexture();
@@ -104,13 +104,13 @@ namespace TileMapDemos
                 image.Width, image.Height, 0, PixelFormat.Rgba, PixelType.UnsignedByte, data);
 
             GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapS,
-                (int) TextureWrapMode.ClampToEdge);
+                (int)TextureWrapMode.ClampToEdge);
             GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapT,
-                (int) TextureWrapMode.ClampToEdge);
+                (int)TextureWrapMode.ClampToEdge);
             GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter,
-                (int) TextureMinFilter.Nearest);
+                (int)TextureMinFilter.Nearest);
             GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter,
-                (int) TextureMagFilter.Nearest);
+                (int)TextureMagFilter.Nearest);
 
             return handle;
         }

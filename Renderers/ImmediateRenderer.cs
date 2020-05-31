@@ -42,11 +42,6 @@ namespace TileMapDemos.Renderers
                     float tileTexCoordX1 = tileTexCoordX0 + IRenderer.TileTexSize - IRenderer.TileTexPadding * 2;
                     float tileTexCoordY1 = tileTexCoordY0 + IRenderer.TileTexSize - IRenderer.TileTexPadding * 2;
 
-                    float tileX0 = x * IRenderer.TileSize;
-                    float tileX1 = tileX0 + IRenderer.TileSize;
-                    float tileY0 = y * IRenderer.TileSize;
-                    float tileY1 = tileY0 + IRenderer.TileSize;
-
                     GL.TexCoord2(tileTexCoordX0, tileTexCoordY0);
                     GL.Vertex2(x, y);
 

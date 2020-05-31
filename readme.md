@@ -32,7 +32,47 @@ Notice how many API calls it took to render a single triangle? Just imagine how 
 For more information, see the [ImmediateRenderer.cs](Renderers/ImmediateRenderer.cs) file.
 
 #### 2. Vertex-Buffered Rendering
-Coming soon.
+A vertex buffer object can simply be defined as a block of memory containing vertex-related data allocated on the GPU's memory. "Vertex-related data" usually includes position data (e.g. x and y coordinates), texture coordinate data (e.g. which part of the texture to render) and color (e.g. what color to tint the texture).
+
+Usually the first step is to initialize the data on the main memory (RAM; the non-GPU main memory), then to copy it to the vertex buffer object. Later the vbo (vertex buffer object) can be updated as the data changes.
+
+Here is a sample of how data can be organized using [interleaving](https://en.wikipedia.org/wiki/Interleaving_(data)):
+
+```
+# Each item in array represents a FLOAT
+| x0 | y0 | tx0 | ty0 | x1 | y1 | tx1 | ty1 | x2 ...
+```
+
+Notice how each vertex has `x`, `y`, `tx` and `ty` attributes. The size of these attributes (in other words, the size of *all* the attributes of a single vertex is called `stride`). To get from `x0` to `x1` we would have to move `stride` number of elements to the right.
+
+But this isn't the only way to organize the data, it can also be organized into multiple buffers. See below:
+
+```
+# Position buffer
+| x0 | y0 | x1 | y1 | x2 ...
+
+# Texcoord buffer
+| tx0 | ty0 | tx1 | ty1 | tx2 ...
+```
+
+In fact, the x and y fields of each can also further be split, making a total of 4 buffers. For more information on the benefits of each arrangement, see the Wikipedia article [Array of Structures vs Structure of Arrays](https://en.wikipedia.org/wiki/AoS_and_SoA).
+
+In the code I used the first arrangement (using a single buffer). Now, once this buffer is made we need to somehow indicate which elements in the buffer correspond to what. OpenGL doesn't naturally know that the first item is x0, followed by y0 and tx0 and ty0... We need to make some clarifications.
+
+This is done by using a vertex array object (vao). The purpose of this construct is to merely map the data inside of the buffer to positions in our shader code (more on this in a bit).
+
+So, the vao is used to say that the first two elements in the buffer of every stride are position-data, and the next two elements are texcoord-data. Once this has been indicated, we will be able to use our buffer. But there is another step, which is the shader program.
+
+Shaders are basically GPU programs. They're an OpenGL feature that allows you to run code on the GPU using the data in that buffer you made earlier.
+This allows you to have more control over vertices and colors and such. In other words, since immediate rendering is deprecated, this is the proper method of customizing rendering logic -- by doing it on the GPU.
+
+In this particular case the shader is very simple. The vao we made earlier maps the data from the buffer to the shader. This means we don't need to read that data from the buffer, rather it is directly initialized in our code as a global field known as an attribute. The shader used in the repository has two attributes: a position coordinate, and a texture coordinate.
+
+It also has a uniform field, which is used to position the vertices on the screen according to the location of the camera. The difference between a uniform field and an attribute field is that the uniform field is a shader-level constant (it can only change between various executions of the shader, but not during a particular execution) and the attribute field is a vertex-level constant.
+
+**Is it better than immediate rendering?** It is faster than immediate rendering since it requires fewer API calls. But buffered rendering requires allocating memory on the GPU. But this is not a disadvantage, since buffering means you don't have to recompute what you already have. Besides, immediate rendering is deprecated. Buffered rendering is better than immediate rendering.
+
+For more information, see the [BufferedRenderer.cs](Renderers/BufferedRenderer.cs) file.
 
 #### 3. Element-Buffered Rendering
 Coming soon.

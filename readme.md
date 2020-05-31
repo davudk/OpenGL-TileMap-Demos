@@ -11,6 +11,8 @@ These are the different methods of rendering I intend on covering:
 3. [Element-Buffered Rendering](#3-element-buffered-rendering)
 4. [Compute Shader Rendering](#4-compute-shader-rendering)
 
+For more information, see the official [OpenTK Getting Started tutorials](https://opentk.net/learn).
+
 #### 1. Immediate Rendering
 **This shouldn't be done in real production applications.** This is demonstrated to convey how OpenGL works under the hood. This method of rendering has been deprecated for years and it is a highly inefficient way of using the GPU.
 
@@ -32,7 +34,7 @@ Notice how many API calls it took to render a single triangle? Just imagine how 
 For more information, see the [ImmediateRenderer.cs](Renderers/ImmediateRenderer.cs) file.
 
 #### 2. Vertex-Buffered Rendering
-A vertex buffer object can simply be defined as a block of memory containing vertex-related data allocated on the GPU's memory. "Vertex-related data" usually includes position data (e.g. x and y coordinates), texture coordinate data (e.g. which part of the texture to render) and color (e.g. what color to tint the texture).
+A vertex buffer object can be defined simply as a block of memory containing vertex-related data allocated on the GPU's memory. "Vertex-related data" usually includes position data (e.g. x and y coordinates), texture coordinate data (e.g. which part of the texture to render) and color (e.g. what color to tint the texture).
 
 Usually the first step is to initialize the data on the main memory (RAM; the non-GPU main memory), then to copy it to the vertex buffer object. Later the vbo (vertex buffer object) can be updated as the data changes.
 
@@ -61,18 +63,17 @@ In the code I used the first arrangement (using a single buffer). Now, once this
 
 This is done by using a vertex array object (vao). The purpose of this construct is to merely map the data inside of the buffer to positions in our shader code (more on this in a bit).
 
-So, the vao is used to say that the first two elements in the buffer of every stride are position-data, and the next two elements are texcoord-data. Once this has been indicated, we will be able to use our buffer. But there is another step, which is the shader program.
+So, the vao is used to say that the first two elements in the buffer of every stride are position-data, and the next two elements are texcoord-data. Once this has been indicated, we will be able to use our buffer. To use the buffer we need a shader program.
 
-Shaders are basically GPU programs. They're an OpenGL feature that allows you to run code on the GPU using the data in that buffer you made earlier.
-This allows you to have more control over vertices and colors and such. In other words, since immediate rendering is deprecated, this is the proper method of customizing rendering logic -- by doing it on the GPU.
+Shaders are basically GPU programs. They're an OpenGL feature that allows you to run code on the GPU and use the data in that buffer you made earlier. This allows you to have more control over vertices and colors and such. In other words, since immediate rendering is deprecated, this is the proper method of customizing render logic -- by doing it on the GPU.
 
-In this particular case the shader is very simple. The vao we made earlier maps the data from the buffer to the shader. This means we don't need to read that data from the buffer, rather it is directly initialized in our code as a global field known as an attribute. The shader used in the repository has two attributes: a position coordinate, and a texture coordinate.
+In this particular case the shader is very simple. The vao we made earlier maps the data from the buffer to the shader. This means we don't read that data from the buffer (e.g. as you would in a general purpose language using array indexing), rather it is directly initialized in our code as a global field known as an attribute. The shader used in the repository has two attributes: a position coordinate, and a texture coordinate.
 
-It also has a uniform field, which is used to position the vertices on the screen according to the location of the camera. The difference between a uniform field and an attribute field is that the uniform field is a shader-level constant (it can only change between various executions of the shader, but not during a particular execution) and the attribute field is a vertex-level constant.
+It also has a uniform field, which is used to position the vertices on the screen according to the location of the camera using a matrix. The difference between a uniform field and an attribute field is that the uniform field is a shader-level constant (it can only change between various executions of the shader, but not during a particular execution) and the attribute field is a vertex-level constant.
 
 **Is it better than immediate rendering?** It is faster than immediate rendering since it requires fewer API calls. But buffered rendering requires allocating memory on the GPU. But this is not a disadvantage, since buffering means you don't have to recompute what you already have. Besides, immediate rendering is deprecated. Buffered rendering is better than immediate rendering.
 
-For more information, see the [BufferedRenderer.cs](Renderers/BufferedRenderer.cs) file.
+For more information, see the [BufferedRenderer.cs](Renderers/BufferedRenderer.cs) file and see [OpenTK's Hello Triangle tutorial](https://opentk.net/learn/chapter1/2-hello-triangle.html).
 
 #### 3. Element-Buffered Rendering
 Coming soon.

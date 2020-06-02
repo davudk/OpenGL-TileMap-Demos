@@ -2,13 +2,12 @@
 using System.Drawing;
 using System.IO;
 using System.Reflection;
-using System.Text;
 using OpenToolkit.Graphics.OpenGL4;
 using OpenToolkit.Mathematics;
 
 namespace TileMapDemos.Renderers
 {
-    public class BufferedRenderer : IRenderer
+    public class VertexBufferedRenderer : IRenderer
     {
         public Vector2 Center { get; set; }
         public TileMap TileMap { get; private set; }
@@ -36,8 +35,8 @@ namespace TileMapDemos.Renderers
             GL.BindVertexArray(vaoHandle);
 
             Matrix4 projection = Matrix4.CreateTranslation(-Center.X, -Center.Y, 0) *
-                Matrix4.CreateScale(IRenderer.TileSize, IRenderer.TileSize, 1) *
-                Matrix4.CreateScale(2f / backBufferWidth, 2f / backBufferHeight, 1);
+                                 Matrix4.CreateScale(IRenderer.TileSize, IRenderer.TileSize, 1) *
+                                 Matrix4.CreateScale(2f / backBufferWidth, 2f / backBufferHeight, 1);
 
             GL.UniformMatrix4(GL.GetUniformLocation(shaderHandle, "projection"), false, ref projection);
 
@@ -83,9 +82,9 @@ namespace TileMapDemos.Renderers
             GL.BindBuffer(BufferTarget.ArrayBuffer, vboHandle);
 
             int floatCount = TileMap.Tiles.Length // for each tile
-                * 6  // there are 6 vertices (two triangles, each with 3 vertices)
-                * 2  // each vertex has two components: Position and Texcoord
-                * 2; // each component has two fields: x and y
+                             * 6 // there are 6 vertices (two triangles, each with 3 vertices)
+                             * 2 // each vertex has two components: Position and Texcoord
+                             * 2; // each component has two fields: x and y
             float[] vertexData = new float[floatCount];
             int i = 0;
             for (int x = 0; x < TileMap.Width; x++)
@@ -141,7 +140,8 @@ namespace TileMapDemos.Renderers
                 }
             }
 
-            GL.BufferData(BufferTarget.ArrayBuffer, vertexData.Length * sizeof(float), vertexData, BufferUsageHint.StaticDraw);
+            GL.BufferData(BufferTarget.ArrayBuffer, vertexData.Length * sizeof(float), vertexData,
+                BufferUsageHint.StaticDraw);
         }
 
         private void GenerateVertexArrayObject()

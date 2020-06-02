@@ -73,10 +73,28 @@ It also has a uniform field, which is used to position the vertices on the scree
 
 **Is it better than immediate rendering?** It is faster than immediate rendering since it requires fewer API calls. But buffered rendering requires allocating memory on the GPU. But this is not a disadvantage, since buffering means you don't have to recompute what you already have. Besides, immediate rendering is deprecated. Buffered rendering is better than immediate rendering.
 
-For more information, see the [BufferedRenderer.cs](Renderers/BufferedRenderer.cs) file and see [OpenTK's Hello Triangle tutorial](https://opentk.net/learn/chapter1/2-hello-triangle.html).
+For more information, see the [BufferedRenderer.cs](Renderers/VertexBufferedRenderer.cs) file and see [OpenTK's Hello Triangle tutorial](https://opentk.net/learn/chapter1/2-hello-triangle.html).
 
 #### 3. Element-Buffered Rendering
-Coming soon.
+This piece is quite straightforward. If you understand how Vertex Buffer Objects work, then Element Array Buffers will be a piece of cake. The latter allows you to reuse vertices defined in your vbo by referencing them by their index.
+
+The indices are populated into an array whose elements are of type byte, ushort or uint. Then once the eab has been created and binded, the indices can be copied to the GPU using the GL.BufferData function.
+
+This allows you to render a quadrilateral (which is two triangles) using 4 vertices rather than 6. For example:
+
+```
+# if this is your vertex buffer object
+# (the points below represent a square)
+| 0, 0 | 10, 0 | 10, 10 | 0, 10 |
+
+# then then would be your element buffer object:
+| 0 | 1 | 2 | 1 | 2 | 3|
+
+# the first triangle is marked by vertices 0, 1, 2
+# the second triangle is marked by vertices 1, 2, 3
+```
+
+For more information, see the [BufferedRenderer.cs](Renderers/ElementBufferedRenderer.cs) file.
 
 #### 4. Compute Shader Rendering
 Coming soon.

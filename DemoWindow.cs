@@ -19,7 +19,7 @@ namespace TileMapDemos
             Profile = ContextProfile.Compatability
         };
 
-        public IRenderer Renderer { get; private set; } = new BufferedRenderer();
+        public IRenderer Renderer { get; private set; } = new ElementBufferedRenderer();
         public TileMap TileMap { get; set; }
 
         public DemoWindow() : base(GameWindowSettings.Default, Settings)

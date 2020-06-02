@@ -9,7 +9,7 @@ These are the different methods of rendering I intend on covering:
 1. [Immediate Rendering (yuck!)](#1-immediate-rendering)
 2. [Vertex-Buffered Rendering](#2-vertex-buffered-rendering)
 3. [Element-Buffered Rendering](#3-element-buffered-rendering)
-4. [Compute Shader Rendering](#4-compute-shader-rendering)
+4. [Geometry Shader Rendering](#4-geometry-shader-rendering)
 
 For more information, see the official [OpenTK Getting Started tutorials](https://opentk.net/learn).
 
@@ -96,7 +96,7 @@ This allows you to render a quadrilateral (which is two triangles) using 4 verti
 
 For more information, see the [ElementBufferedRenderer.cs](Renderers/ElementBufferedRenderer.cs) file.
 
-#### 4. Compute Shader Rendering
+#### 4. Geometry Shader Rendering
 Coming soon.
 
 ## Other notes on rendering tile maps

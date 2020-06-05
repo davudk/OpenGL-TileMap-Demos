@@ -99,7 +99,7 @@ For more information, see the [ElementBufferedRenderer.cs](Renderers/ElementBuff
 #### 4. Geometry Shader Rendering
 This method is great. Instead of copying position or texcoord data to the vertex buffer (allocated on the GPU), we only copy the tile-ids. In this demo, a tile-id is a `byte` (unsigned) and each tile-id corresponds to one vertex. The drawing mode is POINTS (not TRIANGLES).
 
-Using the geometry shader, we can convert each vertex (which is a single tile-id) into two triangles (which make up the square tile). This is done mathematically and it's feasible because the tile map has a uniform structure. In other words, given a map size of 64x64 (using [column-major ordering](https://en.wikipedia.org/wiki/Row-_and_column-major_order))) we can deduce that the tile with index 65 should be at coordinates (1, 1), where as index 66 would be at (1, 2) and 67 would be at (1, 3), and so on. This demonstrates that we can find the position of a tile on the GPU.
+Using the geometry shader, we can convert each vertex (which is a single tile-id) into two triangles (which make up the square tile). This is done mathematically and it's feasible because the tile map has a uniform structure. In other words, given a map size of 64x64 (using [column-major ordering](https://en.wikipedia.org/wiki/Row-_and_column-major_order)) we can deduce that the tile with index 65 should be at coordinates (1, 1), where as index 66 would be at (1, 2) and 67 would be at (1, 3), and so on. This demonstrates that we can find the position of a tile on the GPU.
 
 This begs the question -- since we're only passing the id of the tile (which is used to determine which image we display), how do we determine the index that a tile/vertex is at in the buffer? This is done in the vertex shader using the global value: `gl_VertexID` [(docs)](https://www.khronos.org/registry/OpenGL-Refpages/gl4/html/gl_VertexID.xhtml). This is a 0-indexed integral value that holds the index of the tile/vertex. This is the magic field that allows us to calculate the positions of the two triangles that make up the tile.
 
@@ -108,6 +108,12 @@ This method uses much less GPU memory than the prior two methods, and the code i
 For more information, see the [GeometryRenderer.cs](Renderers/GeometryRenderer.cs) file and the similarly named shader files in the resources directory.
 
 ## Other notes on rendering tile maps
+
+#### How can the Geometry Shader Rendering method be improved further?
+ - Partition your map into smaller chunks. Let's say each chunk is 16 by 16 tiles. The fact that this is a constant will mean you dont have to pass the `mapSize` to the shader. Rather, the chunk size can be hard coded.
+ - Since the chunk size is a multiple of 2, don't use division or modulus in the [GeometryRenderer.vert](Resources/GeometryRenderer.vert) to determine the `x` and `y` positions, instead use bitwise operations. (I included these in the shader, but they're commented out.)
+ - Only draw chunks that are visible to the user. If you've allocated a separate buffer for each chunk, then only draw the buffers that are within the view of the camera. If you've allocated one big buffer, but have a clever way of ordering chunks in it, you can use the last 2 parameters of the DrawArrays function, which allow you to specify which vertices to draw.
+ - If you want to use more tiles use a `ushort` (unsigned 16-bit integer) for the tile-id instead of a `byte` (unsigned 8-bit integer). This will take up twice as much GPU memory for a map of the same width and height. You will have to increase your tileset texture accordingly. The one in the demo assumes that the tileset contains 256 tiles arranged in a grid of 16 by 16. You can, for instance, make 4 tilesets of 128 by 128 tiles (fitting them all into one tileset might make the texture too big, beware of texture size limits). All four tilesets can be bound to four texture units, and you can assume that the last 2 bits in the tile-id determine which of the four tilesets to use, and the first 14 bits determine which tile in that tilese to use. This design might be overkill, especially if you don't need this many tiles.
 
 #### Fixing the lines-between-tiles bug
 ![Lines between tiles](Screenshots/LinesBetweenTiles.png?raw=true)

@@ -97,7 +97,15 @@ This allows you to render a quadrilateral (which is two triangles) using 4 verti
 For more information, see the [ElementBufferedRenderer.cs](Renderers/ElementBufferedRenderer.cs) file.
 
 #### 4. Geometry Shader Rendering
-Coming soon.
+This method is great. Instead of copying position or texcoord data to the vertex buffer (allocated on the GPU), we only copy the tile-ids. In this demo, a tile-id is a `byte` (unsigned) and each tile-id corresponds to one vertex. The drawing mode is POINTS (not TRIANGLES).
+
+Using the geometry shader, we can convert each vertex (which is a single tile-id) into two triangles (which make up the square tile). This is done mathematically and it's feasible because the tile map has a uniform structure. In other words, given a map size of 64x64 (using [column-major ordering](https://en.wikipedia.org/wiki/Row-_and_column-major_order))) we can deduce that the tile with index 65 should be at coordinates (1, 1), where as index 66 would be at (1, 2) and 67 would be at (1, 3), and so on. This demonstrates that we can find the position of a tile on the GPU.
+
+This begs the question -- since we're only passing the id of the tile (which is used to determine which image we display), how do we determine the index that a tile/vertex is at in the buffer? This is done in the vertex shader using the global value: `gl_VertexID` [(docs)](https://www.khronos.org/registry/OpenGL-Refpages/gl4/html/gl_VertexID.xhtml). This is a 0-indexed integral value that holds the index of the tile/vertex. This is the magic field that allows us to calculate the positions of the two triangles that make up the tile.
+
+This method uses much less GPU memory than the prior two methods, and the code is simpler as well.
+
+For more information, see the [GeometryRenderer.cs](Renderers/GeometryRenderer.cs) file and the similarly named shader files in the resources directory.
 
 ## Other notes on rendering tile maps
 

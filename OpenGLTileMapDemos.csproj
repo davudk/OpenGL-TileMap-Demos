@@ -25,6 +25,12 @@
       <EmbeddedResource Include="Resources\BufferedRenderer.frag" />
       <EmbeddedResource Include="Resources\BufferedRenderer.vert" />
       <EmbeddedResource Include="Resources\TileSet.png" />
+      <None Remove="Resources\GeometryRenderer.frag" />
+      <EmbeddedResource Include="Resources\GeometryRenderer.frag" />
+      <None Remove="Resources\GeometryRenderer.geom" />
+      <EmbeddedResource Include="Resources\GeometryRenderer.geom" />
+      <None Remove="Resources\GeometryRenderer.vert" />
+      <EmbeddedResource Include="Resources\GeometryRenderer.vert" />
     </ItemGroup>
 
 </Project>

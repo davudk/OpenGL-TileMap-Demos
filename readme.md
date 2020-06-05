@@ -83,12 +83,12 @@ The indices are populated into an array whose elements are of type byte, ushort 
 This allows you to render a quadrilateral (which is two triangles) using 4 vertices rather than 6. For example:
 
 ```
-# if this is your vertex buffer object
+# if this is your vertex buffer object,
 # (the points below represent a square)
 | 0, 0 | 10, 0 | 10, 10 | 0, 10 |
 
-# then then would be your element buffer object:
-| 0 | 1 | 2 | 1 | 2 | 3|
+# then this would be your element buffer object:
+| 0 | 1 | 2 | 1 | 2 | 3 |
 
 # the first triangle is marked by vertices 0, 1, 2
 # the second triangle is marked by vertices 1, 2, 3

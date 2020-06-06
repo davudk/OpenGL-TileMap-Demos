@@ -81,8 +81,6 @@ namespace TileMapDemos
 
         private int LoadTileSetTexture()
         {
-            GL.GenTexture();
-            GL.BindTexture(TextureTarget.Texture2D, TileMap.TileSetHandle);
             var assembly = Assembly.GetExecutingAssembly();
             using var stream = assembly.GetManifestResourceStream("OpenGLTileMapDemos.Resources.TileSet.png");
             using var image = Image.Load<Rgba32>(stream);
